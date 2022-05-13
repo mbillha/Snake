@@ -8,6 +8,11 @@ The Capstone Project gives you a chance to integrate what you've learned through
 
 In this project, you can build your own C++ application or extend this Snake game, following the principles you have learned throughout this Nanodegree Program. This project will demonstrate that you can independently create applications using a wide range of C++ features.
 
+## Add-Ons
+* Save User HighScore in seperate file
+  * Changes made in main.cpp with two new functions 'GetHighScore()' and 'SaveHighScore'
+
+
 ## Dependencies for Running Locally
 * cmake >= 3.7
   * All OSes: [click here for installation instructions](https://cmake.org/install/)
