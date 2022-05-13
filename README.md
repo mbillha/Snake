@@ -11,6 +11,8 @@ In this project, you can build your own C++ application or extend this Snake gam
 ## Add-Ons
 * Save User HighScore in seperate file
   * Changes made in main.cpp with two new functions 'GetHighScore()' and 'SaveHighScore'
+* Use Smart Pointers for Game, Renderer and Controller
+  * Move Ownership of Renderer and Controller into Game class
 
 
 ## Dependencies for Running Locally

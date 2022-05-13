@@ -4,6 +4,7 @@
 #include <string>
 #include <sys/stat.h>
 #include <sys/types.h>
+#include <memory>
 #include "controller.h"
 #include "game.h"
 #include "renderer.h"
@@ -62,20 +63,20 @@ int main() {
 
   const std::string fHighscore = "../usr_data/highscore.txt";
 
-  Renderer renderer(kScreenWidth, kScreenHeight, kGridWidth, kGridHeight);
-  Controller controller;
-  Game game(kGridWidth, kGridHeight);
-  game.Run(controller, renderer, kMsPerFrame);
+  std::unique_ptr<Renderer> renderer = std::make_unique<Renderer>(kScreenWidth, kScreenHeight, kGridWidth, kGridHeight);
+  std::unique_ptr<Controller> controller = std::make_unique<Controller>();
+  std::unique_ptr<Game> game = std::make_unique<Game>(kGridWidth, kGridHeight);
+  game.get()->Run(std::move(controller), std::move(renderer), kMsPerFrame);
 
   int highScore = GetHighScore(fHighscore);
 
   std::cout << "Game has terminated successfully!\n";
-  if (highScore < game.GetScore())
+  if (highScore < game.get()->GetScore())
   {
     std::cout << "NEW HIGHSCORE!" << std::endl;
-    SaveHighScore(fHighscore, game.GetScore());
+    SaveHighScore(fHighscore, game.get()->GetScore());
   }
-  std::cout << "Score: " << game.GetScore() << "\n";
-  std::cout << "Size: " << game.GetSize() << "\n";
+  std::cout << "Score: " << game.get()->GetScore() << "\n";
+  std::cout << "Size: " << game.get()->GetSize() << "\n";
   return 0;
 }
