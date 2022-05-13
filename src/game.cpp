@@ -21,13 +21,22 @@ void Game::Run(std::unique_ptr<Controller> const controller, std::unique_ptr<Ren
   Uint32 frame_duration;
   int frame_count = 0;
   bool running = true;
+  bool game_paused = false;
 
   while (running) {
     frame_start = SDL_GetTicks();
 
     // Input, Update, Render - the main game loop.
-    controller.get()->HandleInput(running, snake);
-    Update();
+    game_paused = controller.get()->HandleInput(running, snake, game_paused);
+    if(!game_paused)
+    {
+      Update();
+      // After every ten second, add a new Obstacle
+      if (frame_start - obstacle_timestamp >= 10000) {
+        obstacles.AddObstacle(snake, food);
+        obstacle_timestamp = frame_start;
+      }
+    }
     renderer.get()->Render(snake, food, obstacles);
 
     frame_end = SDL_GetTicks();
@@ -44,11 +53,7 @@ void Game::Run(std::unique_ptr<Controller> const controller, std::unique_ptr<Ren
       title_timestamp = frame_end;
     }
 
-    // After every ten second, add a new Obstacle
-    if (frame_end - obstacle_timestamp >= 10000) {
-      obstacles.AddObstacle(snake, food);
-      obstacle_timestamp = frame_end;
-    }
+    
 
 
     // If the time for this frame is too small (i.e. frame_duration is

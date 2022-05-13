@@ -16,6 +16,8 @@ In this project, you can build your own C++ application or extend this Snake gam
 * Added a new class Obstacles
   * Class randomly spawns objects on the grid that can be removed with collecting food. (_rubric class constructor call by references/values_)
   * Class makes use of allocating points on heap memory that is deallocated when calling destructor of the class. (_rubric class destructors_)
+* Added new User Input
+  * Keyboard Input Space leads to a Pause of the game
 
 
 ## Dependencies for Running Locally
