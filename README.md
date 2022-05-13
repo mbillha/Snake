@@ -13,6 +13,9 @@ In this project, you can build your own C++ application or extend this Snake gam
   * Changes made in main.cpp with two new functions 'GetHighScore()' and 'SaveHighScore'
 * Use Smart Pointers for Game, Renderer and Controller
   * Move Ownership of Renderer and Controller into Game class
+* Added a new class Obstacles
+  * Class randomly spawns objects on the grid that can be removed with collecting food.
+  * Class makes use of allocating points on heap memory that is deallocated when calling destructor of the class.
 
 
 ## Dependencies for Running Locally

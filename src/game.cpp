@@ -5,6 +5,7 @@
 
 Game::Game(std::size_t grid_width, std::size_t grid_height)
     : snake(grid_width, grid_height),
+      obstacles(grid_width, grid_height),
       engine(dev()),
       random_w(0, static_cast<int>(grid_width - 1)),
       random_h(0, static_cast<int>(grid_height - 1)) {
@@ -14,6 +15,7 @@ Game::Game(std::size_t grid_width, std::size_t grid_height)
 void Game::Run(std::unique_ptr<Controller> const controller, std::unique_ptr<Renderer> renderer,
                std::size_t target_frame_duration) {
   Uint32 title_timestamp = SDL_GetTicks();
+  Uint32 obstacle_timestamp = SDL_GetTicks();
   Uint32 frame_start;
   Uint32 frame_end;
   Uint32 frame_duration;
@@ -26,7 +28,7 @@ void Game::Run(std::unique_ptr<Controller> const controller, std::unique_ptr<Ren
     // Input, Update, Render - the main game loop.
     controller.get()->HandleInput(running, snake);
     Update();
-    renderer.get()->Render(snake, food);
+    renderer.get()->Render(snake, food, obstacles);
 
     frame_end = SDL_GetTicks();
 
@@ -41,6 +43,13 @@ void Game::Run(std::unique_ptr<Controller> const controller, std::unique_ptr<Ren
       frame_count = 0;
       title_timestamp = frame_end;
     }
+
+    // After every ten second, add a new Obstacle
+    if (frame_end - obstacle_timestamp >= 10000) {
+      obstacles.AddObstacle(snake, food);
+      obstacle_timestamp = frame_end;
+    }
+
 
     // If the time for this frame is too small (i.e. frame_duration is
     // smaller than the target ms_per_frame), delay the loop to
@@ -74,6 +83,11 @@ void Game::Update() {
   int new_x = static_cast<int>(snake.head_x);
   int new_y = static_cast<int>(snake.head_y);
 
+  if(obstacles.ObstacleCell(new_x, new_y))
+  {
+    snake.alive = false;
+  }
+
   // Check if there's food over here
   if (food.x == new_x && food.y == new_y) {
     score++;
@@ -81,6 +95,7 @@ void Game::Update() {
     // Grow snake and increase speed.
     snake.GrowBody();
     snake.speed += 0.02;
+    obstacles.RemoveObstacle();
   }
 }
 

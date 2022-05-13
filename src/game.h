@@ -6,6 +6,7 @@
 #include "SDL.h"
 #include "controller.h"
 #include "renderer.h"
+#include "obstacles.h"
 #include "snake.h"
 
 class Game {
@@ -18,6 +19,7 @@ class Game {
 
  private:
   Snake snake;
+  Obstacles obstacles;
   SDL_Point food;
 
   std::random_device dev;
