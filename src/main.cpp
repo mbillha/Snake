@@ -65,12 +65,12 @@ int main() {
   Renderer renderer(kScreenWidth, kScreenHeight, kGridWidth, kGridHeight);
   Controller controller;
   Game game(kGridWidth, kGridHeight);
-  //game.Run(controller, renderer, kMsPerFrame);
+  game.Run(controller, renderer, kMsPerFrame);
 
   int highScore = GetHighScore(fHighscore);
 
   std::cout << "Game has terminated successfully!\n";
-  if (highScore <= game.GetScore())
+  if (highScore < game.GetScore())
   {
     std::cout << "NEW HIGHSCORE!" << std::endl;
     SaveHighScore(fHighscore, game.GetScore());
